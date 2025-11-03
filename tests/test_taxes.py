@@ -41,6 +41,22 @@ def test_calculate_tax_invalid_tax_rate():
         calculate_tax(100, 100)
 
 
+@pytest.mark.parametrize('price, tax_rate, discount, expected', [(100, 10, 10, 99.0),
+                                                                 (100, 10, 0, 110.0),
+                                                                 (100, 20, 50, 60.0)])
+def test_calculate_tax_with_discount(price, tax_rate, discount, expected):
+    assert calculate_tax(price, tax_rate, discount) == expected
 
 
+@pytest.mark.parametrize('price, tax_rate, discount, round_count, expected', [(100, 10, 10, 1, 99.0),
+                                                                              (200, 10, 0, 2, 220.00),
+                                                                              (333, 21, 53, 3, 189.377)])
+def test_calculate_tax_round(price, tax_rate, discount, round_count, expected):
+    assert calculate_tax(price, tax_rate, discount, round_count) == expected
 
+@pytest.mark.parametrize('price, tax_rate, discount, round_count, expected', [(100, 10, '11', 1, 99.0),
+                                                                              ("200", 10, 0, 2, 220.00),
+                                                                              (333, 21, [53], 3, 189.377)])
+def test_calculate_tax_round(price, tax_rate, discount, round_count, expected):
+    with pytest.raises(TypeError):
+        calculate_tax(price, tax_rate, discount, round_count)
