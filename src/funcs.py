@@ -20,6 +20,7 @@ def calculate_taxes(prices: list[float], tax_rate: float) -> list[float]:
 
 def calculate_tax(price: float,
                   tax_rate: float,
+                  *,
                   discount: float = 0,
                   round_count: int = 2) -> float:
     for arg in [price, tax_rate, discount]:
